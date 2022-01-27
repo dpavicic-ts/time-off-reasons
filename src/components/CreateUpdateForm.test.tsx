@@ -5,10 +5,12 @@ describe('CreateUpdateForm', () => {
   describe('renders form correctly', () => {
     it('version 1', () => {
       render(<CreateUpdateForm />)
+      const [cancelBtn, addBtn] = screen.getAllByRole('button')
 
       expect(screen.getByRole('textbox')).toBeInTheDocument()
       expect(screen.getByRole('combobox')).toBeInTheDocument()
-      expect(screen.getByRole('button')).toBeInTheDocument()
+      expect(cancelBtn).toBeInTheDocument()
+      expect(addBtn).toBeInTheDocument()
     })
 
     it('version 2', () => {

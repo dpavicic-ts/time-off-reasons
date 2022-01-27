@@ -5,7 +5,7 @@ export function CreateUpdateForm() {
     <form action="/" method="post">
       <div>
         <label htmlFor="reasonName">Name</label>
-        <input id="reasonName" type="text" />
+        <input id="reasonName" type="text" placeholder="For ex.: Call Out" />
       </div>
       <div>
         <label htmlFor="reasonType">Type</label>
@@ -14,7 +14,10 @@ export function CreateUpdateForm() {
           <option>Unplanned</option>
         </select>
       </div>
-      <button>Add Reason</button>
+      <div>
+        <button type="reset">Cancel</button>
+        <button type="submit">Add Reason</button>
+      </div>
     </form>
   )
 }
