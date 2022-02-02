@@ -1,3 +1,4 @@
+import { Table } from 'antd'
 import React from 'react'
 import { TimeOffReason } from '../types'
 
@@ -7,21 +8,9 @@ interface Props {
 
 export function ReasonsTable({ reasons }: Props) {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        {reasons.map(r => (
-          <tr key={r.id}>
-            <td>{r.name}</td>
-            <td>{r.type}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table dataSource={reasons} rowKey={reason => reason.id}>
+      <Table.Column title="Name" dataIndex="name" />
+      <Table.Column title="Type" dataIndex="type" />
+    </Table>
   )
 }
