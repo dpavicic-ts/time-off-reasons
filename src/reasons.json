@@ -1,0 +1,5 @@
+[
+  { "name": "Vacation Day", "type": "planned" },
+  { "name": "Personal Day", "type": "planned" },
+  { "name": "Sick Day", "type": "unplanned" }
+]
