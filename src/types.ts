@@ -3,3 +3,5 @@ export interface TimeOffReason {
   name: string
   type: 'planned' | 'unplanned'
 }
+
+export type CreateTimeOffReason = Omit<TimeOffReason, 'id'>

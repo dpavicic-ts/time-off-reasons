@@ -1,9 +1,9 @@
 import { Button, Form, Input, Select } from 'antd'
 import React, { useState } from 'react'
-import { TimeOffReason } from '../types'
+import { CreateTimeOffReason } from '../types'
 
 interface Props {
-  onSave?: (reason: Omit<TimeOffReason, 'id'>) => void
+  onSave?: (reason: CreateTimeOffReason) => void
 }
 
 export function CreateUpdateForm({ onSave = () => {} }: Props) {

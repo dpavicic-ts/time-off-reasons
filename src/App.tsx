@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from 'react'
+import { getReasons, postReason } from './api'
 import { CreateUpdateForm } from './components/CreateUpdateForm'
 import { ReasonsTable } from './components/ReasonsTable'
-import { TimeOffReason } from './types'
-
-const BASE_URL = 'https://620a1d5092946600171c57ae.mockapi.io'
+import { CreateTimeOffReason, TimeOffReason } from './types'
 
 function App() {
   const [reasons, setReasons] = useState<TimeOffReason[]>([])
 
   useEffect(() => {
-    fetch(`${BASE_URL}/time-off-reasons`)
-      .then(res => res.json())
-      .then(data => {
-        setReasons(data)
-      })
+    getReasons().then(data => {
+      setReasons(data)
+    })
   }, [])
+
+  const createReason = (newReason: CreateTimeOffReason) => {
+    postReason(newReason)
+  }
 
   return (
     <div>
       <CreateUpdateForm
         onSave={reason => {
-          const newReason: TimeOffReason = {
-            ...reason,
-            id: `tr${reasons.length + 1}`,
-          }
-          setReasons([...reasons, newReason])
+          createReason(reason)
         }}
       />
       <ReasonsTable reasons={reasons} />
