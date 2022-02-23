@@ -8,9 +8,10 @@ function App() {
   const [reasons, setReasons] = useState<TimeOffReason[]>([])
 
   useEffect(() => {
-    getReasons().then(data => {
+    ;(async () => {
+      const data = await getReasons()
       setReasons(data)
-    })
+    })()
   }, [])
 
   const createReason = (newReason: CreateTimeOffReason) => {

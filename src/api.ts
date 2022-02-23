@@ -2,8 +2,9 @@ import { CreateTimeOffReason } from './types'
 
 const BASE_URL = 'https://620a1d5092946600171c57ae.mockapi.io'
 
-function getReasons() {
-  return fetch(`${BASE_URL}/time-off-reasons`).then(res => res.json())
+async function getReasons() {
+  const res = await fetch(`${BASE_URL}/time-off-reasons`)
+  return await res.json()
 }
 
 function postReason(newReason: CreateTimeOffReason) {
