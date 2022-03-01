@@ -1,14 +1,23 @@
 import { Button, Form, Input, Select } from 'antd'
-import React, { useState } from 'react'
-import { CreateTimeOffReason } from '../types'
+import React, { useEffect, useState } from 'react'
+import { CreateUpdateTimeOffReason, TimeOffReason } from '../types'
 
 interface Props {
-  onSave?: (reason: CreateTimeOffReason) => void
+  reason: TimeOffReason | null
+  onSave?: (reason: CreateUpdateTimeOffReason) => void
+  onCancel?: (reason: CreateUpdateTimeOffReason | null) => void
 }
 
-export function CreateUpdateForm({ onSave = () => {} }: Props) {
-  const [name, setName] = useState('')
-  const [type, setType] = useState<'planned' | 'unplanned'>('planned')
+export function CreateUpdateForm({ reason, onSave = () => {}, onCancel = () => {} }: Props) {
+  const [name, setName] = useState(reason?.name ?? '')
+  const [type, setType] = useState<'planned' | 'unplanned'>(reason?.type ?? 'planned')
+
+  const isEdit = reason != null
+
+  useEffect(() => {
+    setName(reason?.name ?? '')
+    setType(reason?.type ?? 'planned')
+  }, [reason])
 
   return (
     <Form action="/" method="post">
@@ -28,20 +37,17 @@ export function CreateUpdateForm({ onSave = () => {} }: Props) {
         </Select>
       </Form.Item>
       <Form.Item>
-        <Button htmlType="reset">Cancel</Button>
+        <Button htmlType="reset" onClick={() => onCancel(reason)}>
+          Cancel
+        </Button>
         <Button
           htmlType="button"
           type="primary"
           onClick={() => {
-            const reason = {
-              name,
-              type,
-            }
-
-            onSave(reason)
+            onSave(isEdit ? { ...reason, name, type } : { name, type })
           }}
         >
-          Add Reason
+          {isEdit ? 'Edit' : 'Add'} Reason
         </Button>
       </Form.Item>
     </Form>

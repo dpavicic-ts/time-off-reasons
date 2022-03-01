@@ -10,7 +10,7 @@ const reasons: TimeOffReason[] = [
 
 describe('ReasonsTable', () => {
   it('renders columns and rows correctly', () => {
-    render(<ReasonsTable reasons={reasons} />)
+    render(<ReasonsTable reasons={reasons} onEdit={jest.fn()} />)
 
     const headerRow = screen.getByRole('row', { name: /name type/i })
     expect(within(headerRow).getByRole('columnheader', { name: /name/i })).toBeInTheDocument()

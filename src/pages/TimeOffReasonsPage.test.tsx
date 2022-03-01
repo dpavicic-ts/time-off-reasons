@@ -2,7 +2,7 @@ import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { getReasons, postReason } from '../api'
 import { TimeOffReasonsPage } from './TimeOffReasonsPage'
-import { CreateTimeOffReason, TimeOffReason } from '../types'
+import { CreateUpdateTimeOffReason, TimeOffReason } from '../types'
 
 jest.mock('../api')
 
@@ -34,7 +34,7 @@ describe('App', () => {
 
     userEvent.click(screen.getByRole('button', { name: /add reason/i }))
 
-    const expectedReason: CreateTimeOffReason = {
+    const expectedReason: CreateUpdateTimeOffReason = {
       name: 'Call Out',
       type: 'unplanned',
     }

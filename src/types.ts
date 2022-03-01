@@ -4,4 +4,5 @@ export interface TimeOffReason {
   type: 'planned' | 'unplanned'
 }
 
-export type CreateTimeOffReason = Omit<TimeOffReason, 'id'>
+export type CreateUpdateTimeOffReason = Omit<TimeOffReason, 'id'> &
+  Partial<Pick<TimeOffReason, 'id'>>

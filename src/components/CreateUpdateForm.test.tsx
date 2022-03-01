@@ -4,7 +4,7 @@ import { CreateUpdateForm } from './CreateUpdateForm'
 describe('CreateUpdateForm', () => {
   describe('renders form correctly', () => {
     it('version 1', () => {
-      render(<CreateUpdateForm />)
+      render(<CreateUpdateForm reason={null} />)
       const [cancelBtn, addBtn] = screen.getAllByRole('button')
 
       expect(screen.getByRole('textbox')).toBeInTheDocument()
@@ -14,7 +14,7 @@ describe('CreateUpdateForm', () => {
     })
 
     it('version 2', () => {
-      render(<CreateUpdateForm />)
+      render(<CreateUpdateForm reason={null} />)
 
       expect(screen.getByLabelText(/name/i)).toBeInTheDocument()
       expect(screen.getByLabelText(/type/i)).toBeInTheDocument()
@@ -22,7 +22,7 @@ describe('CreateUpdateForm', () => {
     })
 
     it('version 3', () => {
-      render(<CreateUpdateForm />)
+      render(<CreateUpdateForm reason={null} />)
 
       expect(screen.getByRole('textbox', { name: /name/i })).toBeInTheDocument()
       expect(screen.getByRole('combobox', { name: /type/i })).toBeInTheDocument()
