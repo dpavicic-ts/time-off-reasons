@@ -1,10 +1,10 @@
 import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { getReasons, postReason } from './api'
-import App from './App'
-import { CreateTimeOffReason, TimeOffReason } from './types'
+import { getReasons, postReason } from '../api'
+import { TimeOffReasonsPage } from './TimeOffReasonsPage'
+import { CreateTimeOffReason, TimeOffReason } from '../types'
 
-jest.mock('./api')
+jest.mock('../api')
 
 const reasons: TimeOffReason[] = [
   { id: 'tr1', name: 'Vacation Day', type: 'planned' },
@@ -15,14 +15,14 @@ const reasons: TimeOffReason[] = [
 describe('App', () => {
   it('displays fetched reasons', async () => {
     ;(getReasons as jest.Mock).mockReturnValueOnce(Promise.resolve(reasons))
-    render(<App />)
+    render(<TimeOffReasonsPage />)
 
     expect(await screen.findByRole('row', { name: /vacation day planned/i })).toBeInTheDocument()
     expect(await screen.findByRole('row', { name: /personal day planned/i })).toBeInTheDocument()
     expect(await screen.findByRole('row', { name: /sick day unplanned/i })).toBeInTheDocument()
   })
   it('saves a reason', async () => {
-    render(<App />)
+    render(<TimeOffReasonsPage />)
 
     userEvent.type(screen.getByLabelText(/name/i), 'Call Out')
 
