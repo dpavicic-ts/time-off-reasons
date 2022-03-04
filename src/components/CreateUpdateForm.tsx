@@ -39,7 +39,7 @@ export function CreateUpdateForm({ reason, onSave = () => {}, onCancel = () => {
       <Form.Item>
         <Button htmlType="reset" onClick={() => onCancel(reason)}>
           Cancel
-        </Button>
+        </Button>{' '}
         <Button
           htmlType="button"
           type="primary"

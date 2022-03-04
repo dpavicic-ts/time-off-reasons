@@ -37,25 +37,29 @@ export function TimeOffReasonsPage() {
   }
 
   return (
-    <>
-      <CreateUpdateForm
-        reason={reasonDraft}
-        onSave={reason => {
-          if (reason.id) {
-            updateReason(reason as TimeOffReason)
-          } else {
-            createReason(reason)
-          }
-        }}
-        onCancel={() => {
-          setReasonDraft(null)
-        }}
-      />
+    <div style={{ margin: '16px' }}>
+      <h2>Time Off Reasons CRUD</h2>
+      <br />
+      <div style={{ margin: '0 auto', maxWidth: '600px' }}>
+        <CreateUpdateForm
+          reason={reasonDraft}
+          onSave={reason => {
+            if (reason.id) {
+              updateReason(reason as TimeOffReason)
+            } else {
+              createReason(reason)
+            }
+          }}
+          onCancel={() => {
+            setReasonDraft(null)
+          }}
+        />
+      </div>
       <ReasonsTable
         reasons={reasons}
         onEdit={handleEdit}
         onDelete={reason => removeReason(reason)}
       />
-    </>
+    </div>
   )
 }
