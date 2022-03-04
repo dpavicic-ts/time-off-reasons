@@ -15,8 +15,9 @@ export function TimeOffReasonsPage() {
     })()
   }, [])
 
-  const createReason = (newReason: CreateUpdateTimeOffReason) => {
-    postReason(newReason)
+  const createReason = async (newReason: CreateUpdateTimeOffReason) => {
+    const createdReason = await postReason(newReason)
+    setReasons([...reasons, createdReason])
   }
 
   const updateReason = (reason: TimeOffReason) => {

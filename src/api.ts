@@ -7,14 +7,15 @@ async function getReasons() {
   return await res.json()
 }
 
-function postReason(newReason: CreateUpdateTimeOffReason) {
-  return fetch(`${BASE_URL}/time-off-reasons`, {
+async function postReason(newReason: CreateUpdateTimeOffReason): Promise<TimeOffReason> {
+  const response = await fetch(`${BASE_URL}/time-off-reasons`, {
     method: 'POST',
     body: JSON.stringify(newReason),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
     },
   })
+  return await response.json()
 }
 
 function putReason(editedReason: TimeOffReason) {

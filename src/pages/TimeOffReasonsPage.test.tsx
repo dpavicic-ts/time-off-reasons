@@ -2,7 +2,7 @@ import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { getReasons, postReason } from '../api'
 import { TimeOffReasonsPage } from './TimeOffReasonsPage'
-import { CreateUpdateTimeOffReason, TimeOffReason } from '../types'
+import { TimeOffReason } from '../types'
 
 jest.mock('../api')
 
@@ -13,19 +13,32 @@ const reasons: TimeOffReason[] = [
 ]
 
 describe('App', () => {
+  beforeEach(() => {
+    ;(getReasons as jest.Mock).mockReturnValue(Promise.resolve(reasons))
+  })
+
+  afterEach(() => {
+    ;(getReasons as jest.Mock).mockReset()
+  })
+
   it('displays fetched reasons', async () => {
-    ;(getReasons as jest.Mock).mockReturnValueOnce(Promise.resolve(reasons))
     render(<TimeOffReasonsPage />)
 
     expect(await screen.findByRole('row', { name: /vacation day planned/i })).toBeInTheDocument()
     expect(await screen.findByRole('row', { name: /personal day planned/i })).toBeInTheDocument()
     expect(await screen.findByRole('row', { name: /sick day unplanned/i })).toBeInTheDocument()
   })
-  it('saves a reason', async () => {
+  it('creates a reason', async () => {
+    const createdReason: TimeOffReason = {
+      name: 'Call Out',
+      type: 'unplanned',
+      id: 'tr4',
+    }
+    ;(postReason as jest.Mock).mockReturnValueOnce(createdReason)
+
     render(<TimeOffReasonsPage />)
 
     userEvent.type(screen.getByLabelText(/name/i), 'Call Out')
-
     userEvent.click(screen.getByLabelText(/type/i))
     await screen.findByRole('listbox')
     // The event below doesn't work because both "ant-select-selection-item" and "ant-select-item-option" have the same title
@@ -34,10 +47,10 @@ describe('App', () => {
 
     userEvent.click(screen.getByRole('button', { name: /add reason/i }))
 
-    const expectedReason: CreateUpdateTimeOffReason = {
+    expect(postReason).toBeCalledWith({
       name: 'Call Out',
       type: 'unplanned',
-    }
-    expect(postReason).toBeCalledWith(expectedReason)
+    })
+    expect(await screen.findByRole('row', { name: /call out unplanned/i })).toBeInTheDocument()
   })
 })
