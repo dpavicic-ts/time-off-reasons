@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Button, Table } from 'antd'
 import React from 'react'
 import { TimeOffReason } from '../types'
 
@@ -16,10 +16,12 @@ export function ReasonsTable({ reasons, onEdit, onDelete }: Props) {
       <Table.Column
         title="Action"
         render={reason => (
-          <div>
-            <button onClick={() => onEdit(reason)}>Edit</button>
-            <button onClick={() => onDelete(reason)}>Delete</button>
-          </div>
+          <>
+            <Button onClick={() => onEdit(reason)}>Edit</Button>{' '}
+            <Button danger onClick={() => onDelete(reason)} aria-label="Delete">
+              &#10006;
+            </Button>
+          </>
         )}
       />
     </Table>
