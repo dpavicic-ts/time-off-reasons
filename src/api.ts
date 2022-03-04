@@ -18,14 +18,15 @@ async function postReason(newReason: CreateUpdateTimeOffReason): Promise<TimeOff
   return await response.json()
 }
 
-function putReason(editedReason: TimeOffReason) {
-  return fetch(`${BASE_URL}/time-off-reasons/${editedReason.id}`, {
+async function putReason(editedReason: TimeOffReason): Promise<TimeOffReason> {
+  const response = await fetch(`${BASE_URL}/time-off-reasons/${editedReason.id}`, {
     method: 'PUT',
     body: JSON.stringify(editedReason),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
     },
   })
+  return await response.json()
 }
 
 export { getReasons, postReason, putReason }

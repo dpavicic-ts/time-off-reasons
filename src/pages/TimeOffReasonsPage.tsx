@@ -20,8 +20,10 @@ export function TimeOffReasonsPage() {
     setReasons([...reasons, createdReason])
   }
 
-  const updateReason = (reason: TimeOffReason) => {
-    putReason(reason)
+  const updateReason = async (reason: TimeOffReason) => {
+    const updatedReason = await putReason(reason)
+    const newReasons = reasons.map(r => (r.id === updatedReason.id ? updatedReason : r))
+    setReasons(newReasons)
   }
 
   const handleEdit = (reasonToUpdate: TimeOffReason) => {

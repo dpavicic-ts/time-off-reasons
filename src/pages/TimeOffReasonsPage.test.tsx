@@ -1,6 +1,6 @@
-import { screen, render } from '@testing-library/react'
+import { screen, render, act, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { getReasons, postReason } from '../api'
+import { getReasons, postReason, putReason } from '../api'
 import { TimeOffReasonsPage } from './TimeOffReasonsPage'
 import { TimeOffReason } from '../types'
 
@@ -21,7 +21,7 @@ describe('App', () => {
     ;(getReasons as jest.Mock).mockReset()
   })
 
-  it('displays fetched reasons', async () => {
+  it('fetches and displays reasons', async () => {
     render(<TimeOffReasonsPage />)
 
     expect(await screen.findByRole('row', { name: /vacation day planned/i })).toBeInTheDocument()
@@ -52,5 +52,28 @@ describe('App', () => {
       type: 'unplanned',
     })
     expect(await screen.findByRole('row', { name: /call out unplanned/i })).toBeInTheDocument()
+    expect(screen.getAllByRole('row')).toHaveLength(reasons.length + 2) // + added + header row
+  })
+
+  it('updates a reason', async () => {
+    const updatedReason: TimeOffReason = {
+      name: 'Call Out',
+      type: 'planned',
+      id: 'tr1',
+    }
+    render(<TimeOffReasonsPage />)
+    ;(putReason as jest.Mock).mockReturnValueOnce(updatedReason)
+
+    const row = await screen.findByRole('row', { name: /vacation day planned/i })
+    userEvent.click(within(row).getByRole('button', { name: /edit/i }))
+
+    userEvent.clear(screen.getByLabelText(/name/i))
+    userEvent.type(screen.getByLabelText(/name/i), 'Call Out')
+
+    userEvent.click(screen.getByRole('button', { name: /edit reason/i }))
+
+    expect(putReason).toBeCalledWith({ id: 'tr1', name: 'Call Out', type: 'planned' })
+    expect(await screen.findByRole('row', { name: /call out planned/i })).toBeInTheDocument()
+    expect(screen.getAllByRole('row')).toHaveLength(reasons.length + 1) // + header row
   })
 })
