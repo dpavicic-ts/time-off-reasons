@@ -5,9 +5,10 @@ import { TimeOffReason } from '../types'
 interface Props {
   reasons: TimeOffReason[]
   onEdit: (reason: TimeOffReason) => void
+  onDelete: (reason: TimeOffReason) => void
 }
 
-export function ReasonsTable({ reasons, onEdit }: Props) {
+export function ReasonsTable({ reasons, onEdit, onDelete }: Props) {
   return (
     <Table dataSource={reasons} rowKey={reason => reason.id}>
       <Table.Column title="Name" dataIndex="name" />
@@ -17,6 +18,7 @@ export function ReasonsTable({ reasons, onEdit }: Props) {
         render={reason => (
           <div>
             <button onClick={() => onEdit(reason)}>Edit</button>
+            <button onClick={() => onDelete(reason)}>Delete</button>
           </div>
         )}
       />

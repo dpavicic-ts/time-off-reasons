@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getReasons, postReason, putReason } from '../api'
+import { deleteReason, getReasons, postReason, putReason } from '../api'
 import { CreateUpdateForm } from '../components/CreateUpdateForm'
 import { ReasonsTable } from '../components/ReasonsTable'
 import { CreateUpdateTimeOffReason, TimeOffReason } from '../types'
@@ -26,6 +26,12 @@ export function TimeOffReasonsPage() {
     setReasons(newReasons)
   }
 
+  const removeReason = async (reason: TimeOffReason) => {
+    const deletedReason = await deleteReason(reason)
+    const newReasons = reasons.filter(r => r.id !== deletedReason.id)
+    setReasons(newReasons)
+  }
+
   const handleEdit = (reasonToUpdate: TimeOffReason) => {
     setReasonDraft(reasonToUpdate)
   }
@@ -45,7 +51,11 @@ export function TimeOffReasonsPage() {
           setReasonDraft(null)
         }}
       />
-      <ReasonsTable reasons={reasons} onEdit={handleEdit} />
+      <ReasonsTable
+        reasons={reasons}
+        onEdit={handleEdit}
+        onDelete={reason => removeReason(reason)}
+      />
     </>
   )
 }

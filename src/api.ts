@@ -29,4 +29,11 @@ async function putReason(editedReason: TimeOffReason): Promise<TimeOffReason> {
   return await response.json()
 }
 
-export { getReasons, postReason, putReason }
+async function deleteReason(reasonToDelete: TimeOffReason): Promise<TimeOffReason> {
+  const res = await fetch(`${BASE_URL}/time-off-reasons/${reasonToDelete.id}`, {
+    method: 'DELETE',
+  })
+  return await res.json()
+}
+
+export { getReasons, postReason, putReason, deleteReason }

@@ -1,6 +1,6 @@
-import { screen, render, act, within } from '@testing-library/react'
+import { screen, render, within, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { getReasons, postReason, putReason } from '../api'
+import { deleteReason, getReasons, postReason, putReason } from '../api'
 import { TimeOffReasonsPage } from './TimeOffReasonsPage'
 import { TimeOffReason } from '../types'
 
@@ -61,8 +61,9 @@ describe('App', () => {
       type: 'planned',
       id: 'tr1',
     }
-    render(<TimeOffReasonsPage />)
     ;(putReason as jest.Mock).mockReturnValueOnce(updatedReason)
+
+    render(<TimeOffReasonsPage />)
 
     const row = await screen.findByRole('row', { name: /vacation day planned/i })
     userEvent.click(within(row).getByRole('button', { name: /edit/i }))
@@ -75,5 +76,25 @@ describe('App', () => {
     expect(putReason).toBeCalledWith({ id: 'tr1', name: 'Call Out', type: 'planned' })
     expect(await screen.findByRole('row', { name: /call out planned/i })).toBeInTheDocument()
     expect(screen.getAllByRole('row')).toHaveLength(reasons.length + 1) // + header row
+  })
+
+  it('deletes a reason', async () => {
+    const deletedReason: TimeOffReason = {
+      name: 'Personal Day',
+      type: 'planned',
+      id: 'tr2',
+    }
+    ;(deleteReason as jest.Mock).mockReturnValueOnce(deletedReason)
+
+    render(<TimeOffReasonsPage />)
+
+    const row = await screen.findByRole('row', { name: /personal day planned/i })
+    userEvent.click(within(row).getByRole('button', { name: /delete/i }))
+
+    expect(deleteReason).toBeCalledWith(deletedReason)
+    await waitForElementToBeRemoved(() =>
+      screen.queryByRole('row', { name: /personal day planned/i }),
+    )
+    expect(screen.getAllByRole('row')).toHaveLength(reasons.length) // one removed + header row
   })
 })
