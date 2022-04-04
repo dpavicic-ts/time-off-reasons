@@ -1,10 +1,13 @@
 import React from 'react'
+import { ErrorBoundary } from './ErrorBoundary'
 import { TimeOffReasonsPage } from './pages'
 
 function App() {
   return (
     <div>
-      <TimeOffReasonsPage />
+      <ErrorBoundary>
+        <TimeOffReasonsPage />
+      </ErrorBoundary>
     </div>
   )
 }

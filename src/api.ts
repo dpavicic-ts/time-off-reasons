@@ -1,3 +1,4 @@
+import { ErrorInfo } from 'react'
 import { CreateUpdateTimeOffReason, TimeOffReason } from './types'
 
 const BASE_URL = 'https://620a1d5092946600171c57ae.mockapi.io'
@@ -36,4 +37,9 @@ async function deleteReason(reasonToDelete: TimeOffReason): Promise<TimeOffReaso
   return await res.json()
 }
 
-export { getReasons, postReason, putReason, deleteReason }
+async function reportError(_error: Error, _info: ErrorInfo) {
+  // In reality, this would log the error to an error reporting service
+  return Promise.resolve({ success: true })
+}
+
+export { getReasons, postReason, putReason, deleteReason, reportError }
