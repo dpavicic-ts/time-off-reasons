@@ -15,6 +15,15 @@ function Bomb({ shouldThrow = false }) {
   }
 }
 
+beforeAll(() => {
+  // hide console errors
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterAll(() => {
+  ;(console.error as jest.Mock).mockRestore()
+})
+
 afterEach(() => {
   jest.clearAllMocks()
 })
@@ -36,4 +45,6 @@ test('calls reportError and renders that was a problem', () => {
   const info = { componentStack: expect.stringContaining('Bomb') }
   expect(mockReportError).toHaveBeenCalledWith(error, info)
   expect(mockReportError).toHaveBeenCalledTimes(1)
+
+  expect(console.error).toHaveBeenCalledTimes(2) // once by jsdom, and once by React
 })
