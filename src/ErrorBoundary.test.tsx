@@ -31,17 +31,9 @@ afterEach(() => {
 
 test('calls reportError and renders that there was a problem', () => {
   mockReportError.mockReturnValueOnce(() => Promise.resolve({ success: true }))
-  const { rerender } = render(
-    <ErrorBoundary>
-      <Bomb />
-    </ErrorBoundary>,
-  )
+  const { rerender } = render(<Bomb />, { wrapper: ErrorBoundary })
 
-  rerender(
-    <ErrorBoundary>
-      <Bomb shouldThrow />
-    </ErrorBoundary>,
-  )
+  rerender(<Bomb shouldThrow />)
   const error = expect.any(Error)
   const info = { componentStack: expect.stringContaining('Bomb') }
   expect(mockReportError).toHaveBeenCalledWith(error, info)
@@ -55,11 +47,7 @@ test('calls reportError and renders that there was a problem', () => {
   console.error.mockClear() // reset mock calls, but leave the implementation intact
   mockReportError.mockClear()
 
-  rerender(
-    <ErrorBoundary>
-      <Bomb />
-    </ErrorBoundary>,
-  )
+  rerender(<Bomb />)
 
   userEvent.click(screen.getByText(/try again/i))
 
